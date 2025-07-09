@@ -184,7 +184,7 @@ export const useSensors = create<SensorsState>()(
 
 // Import weather store
 import { useWeather } from './useWeather';
-import { SensorCalculations } from '../utils/sensorCalculations';
+import { SensorCalculations } from '../weather/SensorCalculations';
 
 // Subscribe to weather changes
 useWeather.subscribe(
