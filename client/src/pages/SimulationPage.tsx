@@ -86,11 +86,11 @@ export function SimulationPage() {
               position={[0, -0.01, 0]}
               args={[50, 50]}
               cellSize={0.02}
-              cellThickness={0.1}
-              cellColor="#666"
+              cellThickness={0.5}
+              cellColor="#aaa"
               sectionSize={25}
-              sectionThickness={0.2}
-              sectionColor="#999"
+              sectionThickness={0.8}
+              sectionColor="#ddd"
             />
             
             {/* Ground Plane */}
