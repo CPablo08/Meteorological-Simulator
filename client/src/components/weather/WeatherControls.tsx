@@ -5,7 +5,6 @@ import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Button } from '../ui/button';
 import { useWeather } from '../../lib/stores/useWeather';
-import { WeatherSimulation } from '../../lib/weather/WeatherSimulation';
 import { 
   Thermometer, 
   Droplets, 
@@ -20,21 +19,8 @@ import {
 
 export function WeatherControls() {
   const weather = useWeather();
-  const simulation = WeatherSimulation.getInstance();
-
-  const handleControlChange = (key: string, value: any) => {
-    // Update local state
-    (weather as any)[`set${key.charAt(0).toUpperCase() + key.slice(1)}`](value);
-    
-    // Update simulation user controls
-    simulation.setUserControls({ [key]: value });
-  };
 
   const resetToDefaults = () => {
-    // Clear user controls to allow natural simulation
-    simulation.setUserControls({});
-    
-    // Reset local state
     weather.setTemperature(22.5);
     weather.setHumidity(65);
     weather.setPressure(1013.25);
@@ -62,7 +48,7 @@ export function WeatherControls() {
             <Label className="text-sm">Air Temperature</Label>
             <Slider
               value={[weather.temperature]}
-              onValueChange={([value]) => handleControlChange('temperature', value)}
+              onValueChange={([value]) => weather.setTemperature(value)}
               min={-40}
               max={50}
               step={0.1}
@@ -90,7 +76,7 @@ export function WeatherControls() {
             <Label className="text-sm">Relative Humidity</Label>
             <Slider
               value={[weather.humidity]}
-              onValueChange={([value]) => handleControlChange('humidity', value)}
+              onValueChange={([value]) => weather.setHumidity(value)}
               min={0}
               max={100}
               step={1}
@@ -118,7 +104,7 @@ export function WeatherControls() {
             <Label className="text-sm">Barometric Pressure</Label>
             <Slider
               value={[weather.pressure]}
-              onValueChange={([value]) => handleControlChange('pressure', value)}
+              onValueChange={([value]) => weather.setPressure(value)}
               min={950}
               max={1080}
               step={0.1}
@@ -146,7 +132,7 @@ export function WeatherControls() {
             <Label className="text-sm">Wind Speed</Label>
             <Slider
               value={[weather.windSpeed]}
-              onValueChange={([value]) => handleControlChange('windSpeed', value)}
+              onValueChange={([value]) => weather.setWindSpeed(value)}
               min={0}
               max={100}
               step={0.1}
@@ -163,7 +149,7 @@ export function WeatherControls() {
             <Label className="text-sm">Wind Direction</Label>
             <Slider
               value={[weather.windDirection]}
-              onValueChange={([value]) => handleControlChange('windDirection', value)}
+              onValueChange={([value]) => weather.setWindDirection(value)}
               min={0}
               max={359}
               step={1}
@@ -191,7 +177,7 @@ export function WeatherControls() {
             <Label className="text-sm">Solar Radiation</Label>
             <Slider
               value={[weather.solarRadiation]}
-              onValueChange={([value]) => handleControlChange('solarRadiation', value)}
+              onValueChange={([value]) => weather.setSolarRadiation(value)}
               min={0}
               max={1200}
               step={10}
@@ -208,7 +194,7 @@ export function WeatherControls() {
             <Label className="text-sm">UV Index</Label>
             <Slider
               value={[weather.uvIndex]}
-              onValueChange={([value]) => handleControlChange('uvIndex', value)}
+              onValueChange={([value]) => weather.setUvIndex(value)}
               min={0}
               max={11}
               step={0.1}
@@ -236,7 +222,7 @@ export function WeatherControls() {
             <Label className="text-sm">Precipitation Type</Label>
             <Select 
               value={weather.precipitationType} 
-              onValueChange={(value: 'none' | 'rain' | 'snow') => handleControlChange('precipitationType', value)}
+              onValueChange={(value: 'none' | 'rain' | 'snow') => weather.setPrecipitationType(value)}
             >
               <SelectTrigger>
                 <SelectValue />
@@ -253,7 +239,7 @@ export function WeatherControls() {
             <Label className="text-sm">Precipitation Rate</Label>
             <Slider
               value={[weather.precipitation]}
-              onValueChange={([value]) => handleControlChange('precipitation', value)}
+              onValueChange={([value]) => weather.setPrecipitation(value)}
               min={0}
               max={50}
               step={0.1}
@@ -281,7 +267,7 @@ export function WeatherControls() {
             <Label className="text-sm">Visibility Distance</Label>
             <Slider
               value={[weather.visibility]}
-              onValueChange={([value]) => handleControlChange('visibility', value)}
+              onValueChange={([value]) => weather.setVisibility(value)}
               min={100}
               max={50000}
               step={100}

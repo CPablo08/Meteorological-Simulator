@@ -40,12 +40,6 @@ export function SimulationPage() {
           {/* Quick stats */}
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
-              <Cloud className="w-5 h-5 text-primary" />
-              <span className="text-lg font-semibold">
-                {Math.floor(weather.simulationHour)}:{String(Math.floor((weather.simulationHour % 1) * 60)).padStart(2, '0')}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
               <Thermometer className="w-5 h-5 text-primary" />
               <span className="text-lg font-semibold">
                 {weather.temperature.toFixed(1)}°C
@@ -76,41 +70,16 @@ export function SimulationPage() {
             shadows
             gl={{ antialias: true }}
           >
-            <color attach="background" args={[
-              weather.simulationHour > 18 || weather.simulationHour < 6 
-                ? '#0a0a2a' // Dark blue night
-                : weather.simulationHour > 16 || weather.simulationHour < 8
-                ? '#2a1a1a' // Dark orange dawn/dusk
-                : '#1a1a1a' // Dark grey day
-            ]} />
+            <color attach="background" args={['#0a0a0a']} />
             
-            {/* Dynamic Day/Night Lighting */}
-            <ambientLight intensity={0.2 + weather.dayProgress * 0.3} />
+            {/* Lighting */}
+            <ambientLight intensity={0.3} />
             <directionalLight
-              position={[
-                Math.cos((weather.simulationHour - 6) * Math.PI / 12) * 15,
-                Math.sin((weather.simulationHour - 6) * Math.PI / 12) * 15,
-                5
-              ]}
-              intensity={weather.solarRadiation / 1000}
-              color={weather.simulationHour > 18 || weather.simulationHour < 6 ? "#4444aa" : "#ffffff"}
+              position={[10, 10, 5]}
+              intensity={1}
               castShadow
               shadow-mapSize={[1024, 1024]}
             />
-            
-            {/* Sun/Moon Visualization */}
-            <mesh position={[
-              Math.cos((weather.simulationHour - 6) * Math.PI / 12) * 20,
-              Math.sin((weather.simulationHour - 6) * Math.PI / 12) * 20,
-              0
-            ]}>
-              <sphereGeometry args={[0.5, 16, 16]} />
-              <meshBasicMaterial 
-                color={weather.simulationHour > 18 || weather.simulationHour < 6 ? "#dddddd" : "#ffff00"} 
-                emissive={weather.simulationHour > 18 || weather.simulationHour < 6 ? "#444444" : "#ffff00"}
-                emissiveIntensity={0.5}
-              />
-            </mesh>
             
             {/* Ground Grid */}
             <Grid
