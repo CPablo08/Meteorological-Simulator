@@ -112,7 +112,6 @@ export function SimulationPage() {
               enableRotate={true}
               minDistance={5}
               maxDistance={50}
-              maxPolarAngle={Math.PI / 2}
             />
             
             {/* Performance Stats */}
