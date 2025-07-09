@@ -14,6 +14,10 @@ Preferred communication style: Simple, everyday language.
 - **January 2025**: Generated high-quality 3D models for meteorological station components (weather station, anemometer, wind vane)
 - **January 2025**: Improved 3D simulation grid - reduced size from 50x50 to 20x20 with smaller cells (0.5 units) for better detail and navigation
 - **January 2025**: Enhanced visual appearance of meteorological station simulation
+- **January 2025**: Added structural poles connecting all floating sensors to main mast for realistic appearance
+- **January 2025**: Optimized grid to 50x50 with 0.2 unit cells covering entire floor with bright visibility
+- **January 2025**: Fixed scrolling issues on Control and Dashboard pages by removing CSS overflow constraints
+- **January 2025**: Enabled full camera movement in 3D simulation (removed vertical rotation limits)
 
 ## System Architecture
 
