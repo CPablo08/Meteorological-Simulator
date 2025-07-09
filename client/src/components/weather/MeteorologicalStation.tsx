@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { useTexture } from '@react-three/drei';
+import { useGLTF, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { useWeather } from '../../lib/stores/useWeather';
 
@@ -11,8 +11,10 @@ export function MeteorologicalStation() {
   const windVaneRef = useRef<THREE.Group>(null);
   const solarPanelRef = useRef<THREE.Group>(null);
   
-  // Load textures
-  const woodTexture = useTexture('/textures/wood.jpg');
+  // Load 3D models
+  const { scene: stationModel } = useGLTF('/models/weather-station.glb');
+  const { scene: anemometerModel } = useGLTF('/models/anemometer.glb');
+  const { scene: windVaneModel } = useGLTF('/models/wind-vane.glb');
   
   // Animate rotating components
   useFrame((state, delta) => {

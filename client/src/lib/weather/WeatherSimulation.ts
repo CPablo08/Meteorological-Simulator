@@ -62,7 +62,7 @@ export class WeatherSimulation {
     
     // Wind with random variations
     const windSpeed = 5 + Math.random() * 25;
-    const windDirection = (windDirection + (Math.random() - 0.5) * 30) % 360;
+    const windDirection = (Math.random() * 360) % 360;
     
     // Solar radiation based on time of day
     const solarRadiation = Math.max(0, Math.sin((hour - 6) * Math.PI / 12) * 1000);
