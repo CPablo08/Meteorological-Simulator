@@ -85,11 +85,11 @@ export function SimulationPage() {
             <Grid
               position={[0, -0.01, 0]}
               args={[50, 50]}
-              cellSize={0.05}
-              cellThickness={0.2}
+              cellSize={0.02}
+              cellThickness={0.1}
               cellColor="#666"
-              sectionSize={10}
-              sectionThickness={0.4}
+              sectionSize={25}
+              sectionThickness={0.2}
               sectionColor="#999"
             />
             
