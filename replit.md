@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a full-stack web application that simulates a meteorological (weather) station with real-time data visualization, interactive 3D simulation, and comprehensive weather parameter controls. The system provides an immersive experience for monitoring and controlling weather conditions through a modern web interface.
+This is a full-stack web application that simulates a meteorological (weather) station with real-time data visualization, interactive 3D simulation, comprehensive weather parameter controls, and live weather station data integration. The system provides an immersive experience for monitoring and controlling weather conditions through a modern web interface, with support for both simulated and real meteorological station data.
 
 ## User Preferences
 
@@ -18,6 +18,8 @@ Preferred communication style: Simple, everyday language.
 - **January 2025**: Optimized grid to 50x50 with 0.2 unit cells covering entire floor with bright visibility
 - **January 2025**: Fixed scrolling issues on Control and Dashboard pages by removing CSS overflow constraints
 - **January 2025**: Enabled full camera movement in 3D simulation (removed vertical rotation limits)
+- **January 2025**: Added Real-time Weather Station dashboard with API integration for live meteorological data
+- **January 2025**: Implemented secure API credential storage and backend endpoint for weather station data
 
 ## System Architecture
 
@@ -72,6 +74,13 @@ Preferred communication style: Simple, everyday language.
 - **Weather Parameter Controls**: Sliders and selectors for temperature, humidity, pressure, wind, solar radiation, UV index, precipitation, and visibility
 - **Simulation Management**: Start/stop/reset simulation controls
 - **Real-time Feedback**: Immediate response to parameter changes
+
+### Real-time Weather Station Dashboard
+- **Live Data Integration**: Real-time connection to external meteorological station via API
+- **Station Status Monitoring**: Connection status, battery level, signal strength, and data update rates
+- **Comprehensive Sensor Display**: All weather parameters with live updates and status indicators
+- **Auto-refresh Capability**: Configurable automatic data refresh every 10 seconds
+- **API Security**: Secure credential storage and authenticated data fetching
 
 ### Data Storage
 - **Database Schema**: User management with Drizzle ORM
