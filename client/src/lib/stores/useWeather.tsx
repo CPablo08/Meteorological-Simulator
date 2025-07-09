@@ -13,6 +13,10 @@ export interface WeatherState {
   precipitationType: 'none' | 'rain' | 'snow';
   visibility: number;
   
+  // Time simulation
+  simulationHour: number; // 0-23
+  dayProgress: number; // 0-1 (0 = midnight, 0.5 = noon)
+  
   // Simulation controls
   isSimulating: boolean;
   simulationSpeed: number;
@@ -50,6 +54,10 @@ export const useWeather = create<WeatherState>()(
     precipitation: 0,
     precipitationType: 'none',
     visibility: 10000,
+    
+    // Time simulation
+    simulationHour: 12, // Start at noon
+    dayProgress: 0.5, // 50% through day
     
     // Simulation state
     isSimulating: false,
