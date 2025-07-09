@@ -1,7 +1,4 @@
-` tags.
 
-```python
-<replit_final_file>
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 
@@ -176,15 +173,17 @@ export const useSensors = create<SensorsState>()(
       });
     },
 
-  resetPrecipitationSensors: () => set((state) => ({
-    ...state,
-    rainGauge: { ...state.rainGauge, current: 0 },
-    tippingBucket: { ...state.tippingBucket, current: 0 },
-    precipitationRate: { ...state.precipitationRate, current: 0 },
-  })),
+    resetPrecipitationSensors: () => set((state) => ({
+      ...state,
+      rainGauge: { ...state.rainGauge, current: 0 },
+      tippingBucket: { ...state.tippingBucket, current: 0 },
+      precipitationRate: { ...state.precipitationRate, current: 0 },
+    })),
   }))
 );
-import { useWeather } from './weatherStore';
+
+// Import weather store
+import { useWeather } from './useWeather';
 import { SensorCalculations } from '../utils/sensorCalculations';
 
 // Subscribe to weather changes
@@ -193,10 +192,22 @@ useWeather.subscribe(
   (weather) => {
     useSensors.setState((state) => {
       // Calculate precipitation sensors based on weather
-      const currentPrecipitation = weather.precipitationType !== 'none' ? weather.precipitation : 0;
-      const tipRate = currentPrecipitation * 5; // Convert mm/h to tips (0.2mm per tip)
-      const newTips = state.tippingBucket.current + (tipRate * 0.016667); // Per minute increment
-      const newRainGauge = state.rainGauge.current + (currentPrecipitation * 0.016667); // Per minute increment
+      const isPrecipitating = weather.precipitationType !== 'none';
+      const currentPrecipitation = isPrecipitating ? weather.precipitation : 0;
+      
+      // Reset precipitation sensors when no precipitation
+      let newRainGauge = state.rainGauge.current;
+      let newTippingBucket = state.tippingBucket.current;
+      
+      if (isPrecipitating) {
+        const incrementPerMinute = currentPrecipitation * 0.016667; // Convert mm/h to mm/min
+        newRainGauge += incrementPerMinute;
+        newTippingBucket += incrementPerMinute / 0.2; // 0.2mm per tip
+      } else {
+        // Reset when no precipitation
+        newRainGauge = 0;
+        newTippingBucket = 0;
+      }
 
       return {
         ...state,
@@ -216,9 +227,9 @@ useWeather.subscribe(
         solarPanelVoltage: { ...state.solarPanelVoltage, current: (weather.solarRadiation / 1000) * 12 },
         batteryLevel: { ...state.batteryLevel, current: Math.max(20, Math.min(100, state.batteryLevel.current + (weather.solarRadiation > 100 ? 0.1 : -0.05))) },
         internalTemperature: { ...state.internalTemperature, current: weather.temperature + 5 + Math.random() * 2 },
-        // Precipitation sensors
+        // Fixed precipitation sensors
         rainGauge: { ...state.rainGauge, current: newRainGauge },
-        tippingBucket: { ...state.tippingBucket, current: newTips },
+        tippingBucket: { ...state.tippingBucket, current: newTippingBucket },
         precipitationRate: { ...state.precipitationRate, current: currentPrecipitation },
       };
     });
