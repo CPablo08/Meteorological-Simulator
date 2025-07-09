@@ -92,6 +92,17 @@ export function MeteorologicalStation() {
       
       {/* Temperature Sensor with Radiation Shield */}
       <group position={[0.5, 2.5, 0]}>
+        {/* Connecting pole from main mast */}
+        <mesh position={[-0.25, -0.5, 0]} castShadow>
+          <cylinderGeometry args={[0.01, 0.01, 1]} />
+          <meshStandardMaterial color="#666" />
+        </mesh>
+        {/* Horizontal arm */}
+        <mesh position={[-0.25, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+          <cylinderGeometry args={[0.008, 0.008, 0.5]} />
+          <meshStandardMaterial color="#666" />
+        </mesh>
+        
         <mesh castShadow>
           <cylinderGeometry args={[0.15, 0.15, 0.3]} />
           <meshStandardMaterial color="#ddd" />
@@ -112,6 +123,17 @@ export function MeteorologicalStation() {
       
       {/* Humidity Sensor */}
       <group position={[-0.5, 2.5, 0]}>
+        {/* Connecting pole from main mast */}
+        <mesh position={[0.25, -0.5, 0]} castShadow>
+          <cylinderGeometry args={[0.01, 0.01, 1]} />
+          <meshStandardMaterial color="#666" />
+        </mesh>
+        {/* Horizontal arm */}
+        <mesh position={[0.25, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+          <cylinderGeometry args={[0.008, 0.008, 0.5]} />
+          <meshStandardMaterial color="#666" />
+        </mesh>
+        
         <mesh castShadow>
           <boxGeometry args={[0.1, 0.1, 0.05]} />
           <meshStandardMaterial color="#4444ff" />
@@ -124,6 +146,17 @@ export function MeteorologicalStation() {
       
       {/* Pressure Sensor */}
       <group position={[0, 1.8, 0.5]}>
+        {/* Connecting pole from main mast */}
+        <mesh position={[0, -0.8, -0.5]} castShadow>
+          <cylinderGeometry args={[0.01, 0.01, 1.6]} />
+          <meshStandardMaterial color="#666" />
+        </mesh>
+        {/* Horizontal arm */}
+        <mesh position={[0, 0, -0.25]} rotation={[Math.PI / 2, 0, 0]} castShadow>
+          <cylinderGeometry args={[0.008, 0.008, 0.5]} />
+          <meshStandardMaterial color="#666" />
+        </mesh>
+        
         <mesh castShadow>
           <cylinderGeometry args={[0.08, 0.08, 0.1]} />
           <meshStandardMaterial color="#666" />
@@ -136,6 +169,17 @@ export function MeteorologicalStation() {
       
       {/* Rain Gauge */}
       <group position={[1, 1.5, 0]}>
+        {/* Connecting pole from base */}
+        <mesh position={[-0.5, -0.5, 0]} castShadow>
+          <cylinderGeometry args={[0.01, 0.01, 1]} />
+          <meshStandardMaterial color="#666" />
+        </mesh>
+        {/* Horizontal arm */}
+        <mesh position={[-0.5, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+          <cylinderGeometry args={[0.008, 0.008, 1]} />
+          <meshStandardMaterial color="#666" />
+        </mesh>
+        
         <mesh castShadow>
           <cylinderGeometry args={[0.1, 0.1, 0.3]} />
           <meshStandardMaterial color="#333" />
@@ -148,6 +192,17 @@ export function MeteorologicalStation() {
       
       {/* Tipping Bucket Rain Gauge */}
       <group position={[1, 1, 0]}>
+        {/* Connecting pole from base */}
+        <mesh position={[-0.5, -0.5, 0]} castShadow>
+          <cylinderGeometry args={[0.01, 0.01, 1]} />
+          <meshStandardMaterial color="#666" />
+        </mesh>
+        {/* Horizontal arm */}
+        <mesh position={[-0.5, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+          <cylinderGeometry args={[0.008, 0.008, 1]} />
+          <meshStandardMaterial color="#666" />
+        </mesh>
+        
         <mesh castShadow>
           <boxGeometry args={[0.2, 0.1, 0.2]} />
           <meshStandardMaterial color="#555" />
@@ -173,6 +228,17 @@ export function MeteorologicalStation() {
       
       {/* UV Sensor */}
       <group position={[0.3, 4, 0]}>
+        {/* Connecting pole from main mast */}
+        <mesh position={[-0.15, -1, 0]} castShadow>
+          <cylinderGeometry args={[0.01, 0.01, 2]} />
+          <meshStandardMaterial color="#666" />
+        </mesh>
+        {/* Horizontal arm */}
+        <mesh position={[-0.15, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+          <cylinderGeometry args={[0.008, 0.008, 0.3]} />
+          <meshStandardMaterial color="#666" />
+        </mesh>
+        
         <mesh castShadow>
           <cylinderGeometry args={[0.03, 0.03, 0.08]} />
           <meshStandardMaterial color="#8844ff" />
@@ -185,6 +251,17 @@ export function MeteorologicalStation() {
       
       {/* Data Logger Box */}
       <group position={[0, 1.2, 0.8]}>
+        {/* Connecting pole from main mast */}
+        <mesh position={[0, -0.2, -0.8]} castShadow>
+          <cylinderGeometry args={[0.01, 0.01, 0.4]} />
+          <meshStandardMaterial color="#666" />
+        </mesh>
+        {/* Horizontal arm */}
+        <mesh position={[0, 0, -0.4]} rotation={[Math.PI / 2, 0, 0]} castShadow>
+          <cylinderGeometry args={[0.008, 0.008, 0.8]} />
+          <meshStandardMaterial color="#666" />
+        </mesh>
+        
         <mesh castShadow>
           <boxGeometry args={[0.4, 0.3, 0.2]} />
           <meshStandardMaterial color="#333" />
