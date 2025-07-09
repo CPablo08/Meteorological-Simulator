@@ -4,7 +4,7 @@ import { Navigation } from './components/ui/navigation';
 import { ControlPage } from './pages/ControlPage';
 import { SimulationPage } from './pages/SimulationPage';
 import { DashboardPage } from './pages/DashboardPage';
-import { RealtimePage } from './pages/RealtimePage';
+
 import '@fontsource/inter';
 
 const queryClient = new QueryClient({
@@ -16,7 +16,7 @@ const queryClient = new QueryClient({
   },
 });
 
-type PageType = 'control' | 'simulation' | 'dashboard' | 'realtime';
+type PageType = 'control' | 'simulation' | 'dashboard';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<PageType>('control');
@@ -34,8 +34,6 @@ function App() {
         return <SimulationPage />;
       case 'dashboard':
         return <DashboardPage />;
-      case 'realtime':
-        return <RealtimePage />;
       default:
         return <ControlPage />;
     }

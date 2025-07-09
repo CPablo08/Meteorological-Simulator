@@ -4,8 +4,8 @@ import { Card } from './card';
 import { Cloud, Settings, BarChart3, Radio } from 'lucide-react';
 
 interface NavigationProps {
-  currentPage: 'control' | 'simulation' | 'dashboard' | 'realtime';
-  onPageChange: (page: 'control' | 'simulation' | 'dashboard' | 'realtime') => void;
+  currentPage: 'control' | 'simulation' | 'dashboard';
+  onPageChange: (page: 'control' | 'simulation' | 'dashboard') => void;
 }
 
 export function Navigation({ currentPage, onPageChange }: NavigationProps) {
@@ -13,7 +13,6 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
     { id: 'control', label: 'Control', icon: Settings },
     { id: 'simulation', label: 'Simulation', icon: Cloud },
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
-    { id: 'realtime', label: 'Real-time', icon: Radio },
   ] as const;
 
   return (
