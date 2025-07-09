@@ -202,7 +202,10 @@ useWeather.subscribe(
       let newRainGauge = 0;
       let newTippingBucket = 0;
       
-      if (weather.precipitationType !== 'none' && weather.precipitation > 0) {
+      // Only show precipitation if type is not 'none' AND amount is greater than 0
+      const isActivePrecipitation = weather.precipitationType !== 'none' && weather.precipitation > 0;
+      
+      if (isActivePrecipitation) {
         // For simulation purposes, show current precipitation rate as accumulated value
         // This way sensors immediately reflect what you set in the control panel
         newRainGauge = weather.precipitation; // Show current rate as mm accumulated
@@ -233,7 +236,7 @@ useWeather.subscribe(
         // Precipitation sensors - directly reflect control panel input
         rainGauge: { ...state.rainGauge, current: newRainGauge },
         tippingBucket: { ...state.tippingBucket, current: newTippingBucket },
-        precipitationRate: { ...state.precipitationRate, current: weather.precipitationType === 'none' ? 0 : weather.precipitation },
+        precipitationRate: { ...state.precipitationRate, current: isActivePrecipitation ? weather.precipitation : 0 },
       };
     });
   }

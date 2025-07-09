@@ -226,10 +226,7 @@ export function WeatherControls() {
               value={weather.precipitationType} 
               onValueChange={(value: 'none' | 'rain' | 'snow') => {
                 weather.setPrecipitationType(value);
-                if (value === 'none') {
-                  weather.setPrecipitation(0);
-                  sensors.resetPrecipitationSensors();
-                }
+                // Don't automatically reset precipitation amount - let user control it
               }}
             >
               <SelectTrigger>
