@@ -118,7 +118,7 @@ export function WeatherEffects() {
             color="#6699ff"
             size={0.1}
             transparent
-            opacity={0.7}
+            opacity={Math.min(0.7, weather.precipitation / 10)}
             vertexColors={false}
           />
         </Points>
@@ -139,7 +139,7 @@ export function WeatherEffects() {
             color="#ffffff"
             size={0.3}
             transparent
-            opacity={0.8}
+            opacity={Math.min(0.8, weather.precipitation / 10)}
             vertexColors={false}
           />
         </Points>
