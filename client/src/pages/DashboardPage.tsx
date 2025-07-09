@@ -131,15 +131,21 @@ export function DashboardPage() {
         {/* Main Content */}
         <div className="space-y-6">
           <SensorGrid />
-          <NormalParameters />
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Technical Display - Takes up 1 column */}
-            <TechnicalDisplay />
+          
+          {/* Charts Section - All graphs together */}
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Technical Display - Takes up 1 column */}
+              <TechnicalDisplay />
+            </div>
+            
+            {/* Data Charts - Full width */}
+            <DataCharts />
           </div>
+          
+          {/* References at the bottom */}
+          <NormalParameters />
         </div>
-
-        {/* Data Charts - Full width */}
-        <DataCharts />
       </div>
     </div>
   );
