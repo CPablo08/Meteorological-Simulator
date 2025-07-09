@@ -104,6 +104,34 @@ export function RealtimePage() {
     );
   }
 
+  // Check if we have an authentication error in the data
+  if (stationData?.status === 'error') {
+    return (
+      <div className="min-h-screen bg-background p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-center h-64">
+            <Card className="bg-card/50 border-yellow-500">
+              <CardContent className="p-6 text-center">
+                <WifiOff className="w-12 h-12 text-yellow-500 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">API Authentication Failed</h3>
+                <p className="text-muted-foreground mb-4">
+                  {stationData.message || 'Please verify your WeatherLink v2 API credentials'}
+                </p>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Go to <a href="https://www.weatherlink.com/account" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">WeatherLink Account</a> to generate new credentials
+                </p>
+                <Button onClick={() => refetch()} variant="outline">
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Retry Connection
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-6">
