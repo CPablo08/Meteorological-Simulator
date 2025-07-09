@@ -198,24 +198,15 @@ useWeather.subscribe(
       const deltaTime = (currentTime - lastUpdateTime) / 1000; // Convert to seconds
       lastUpdateTime = currentTime;
       
-      // Calculate precipitation sensors based on weather
-      const isPrecipitating = weather.precipitationType !== 'none' && weather.precipitation > 0;
+      // Calculate precipitation sensors - directly reflect control panel input
+      let newRainGauge = 0;
+      let newTippingBucket = 0;
       
-      // Reset precipitation sensors when precipitation type changes to 'none'
-      let newRainGauge = state.rainGauge.current;
-      let newTippingBucket = state.tippingBucket.current;
-      
-      if (weather.precipitationType === 'none') {
-        // Reset when no precipitation
-        newRainGauge = 0;
-        newTippingBucket = 0;
-      } else if (isPrecipitating) {
-        // Accumulate precipitation when it's actively raining/snowing
-        // Convert mm/h to mm/second, then multiply by delta time
-        const incrementPerSecond = weather.precipitation / 3600; // mm/h to mm/s
-        const increment = incrementPerSecond * deltaTime;
-        newRainGauge += increment;
-        newTippingBucket += increment / 0.2; // 0.2mm per tip
+      if (weather.precipitationType !== 'none' && weather.precipitation > 0) {
+        // For simulation purposes, show current precipitation rate as accumulated value
+        // This way sensors immediately reflect what you set in the control panel
+        newRainGauge = weather.precipitation; // Show current rate as mm accumulated
+        newTippingBucket = weather.precipitation / 0.2; // 0.2mm per tip
       }
       
       // Update last precipitation type
@@ -239,9 +230,9 @@ useWeather.subscribe(
         solarPanelVoltage: { ...state.solarPanelVoltage, current: (weather.solarRadiation / 1000) * 12 },
         batteryLevel: { ...state.batteryLevel, current: Math.max(20, Math.min(100, state.batteryLevel.current + (weather.solarRadiation > 100 ? 0.1 : -0.05))) },
         internalTemperature: { ...state.internalTemperature, current: weather.temperature + 5 + Math.random() * 2 },
-        // Fixed precipitation sensors - read exactly what's input in control panel
-        rainGauge: { ...state.rainGauge, current: Math.max(0, newRainGauge) },
-        tippingBucket: { ...state.tippingBucket, current: Math.max(0, newTippingBucket) },
+        // Precipitation sensors - directly reflect control panel input
+        rainGauge: { ...state.rainGauge, current: newRainGauge },
+        tippingBucket: { ...state.tippingBucket, current: newTippingBucket },
         precipitationRate: { ...state.precipitationRate, current: weather.precipitationType === 'none' ? 0 : weather.precipitation },
       };
     });
