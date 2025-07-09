@@ -84,12 +84,12 @@ export function SimulationPage() {
             {/* Ground Grid */}
             <Grid
               position={[0, -0.01, 0]}
-              args={[50, 50]}
-              cellSize={1}
-              cellThickness={0.5}
+              args={[20, 20]}
+              cellSize={0.5}
+              cellThickness={0.3}
               cellColor="#333"
-              sectionSize={10}
-              sectionThickness={1}
+              sectionSize={5}
+              sectionThickness={0.8}
               sectionColor="#555"
             />
             

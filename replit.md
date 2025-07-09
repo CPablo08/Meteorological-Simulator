@@ -8,6 +8,13 @@ This is a full-stack web application that simulates a meteorological (weather) s
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes
+
+- **January 2025**: Fixed wind direction simulation error that was causing repeated crashes
+- **January 2025**: Generated high-quality 3D models for meteorological station components (weather station, anemometer, wind vane)
+- **January 2025**: Improved 3D simulation grid - reduced size from 50x50 to 20x20 with smaller cells (0.5 units) for better detail and navigation
+- **January 2025**: Enhanced visual appearance of meteorological station simulation
+
 ## System Architecture
 
 ### Frontend Architecture
