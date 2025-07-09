@@ -140,7 +140,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  
+  // Transform WeatherLink API data to our dashboard format
+  function transformWeatherLinkData(rawData) {
+    const now = new Date().toISOString();
+    let transformed = {
+      timestamp: now,
+      temperature: null,
+      humidity: null,
+      pressure: null,
+      windSpeed: null,
+      windDirection: null,
+      solarRadiation: null,
+      uvIndex: null,
+      precipitation: null,
+      visibility: null,
+      status: 'online',
+      batteryLevel: null,
+      signalStrength: null
+    };
 
     // Parse sensor data from WeatherLink response
     if (rawData.sensors && Array.isArray(rawData.sensors)) {
