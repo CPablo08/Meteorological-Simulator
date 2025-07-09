@@ -85,7 +85,7 @@ export function SimulationPage() {
             <Grid
               position={[0, -0.01, 0]}
               args={[50, 50]}
-              cellSize={0.02}
+              cellSize={0.2}
               cellThickness={0.5}
               cellColor="#aaa"
               sectionSize={25}
