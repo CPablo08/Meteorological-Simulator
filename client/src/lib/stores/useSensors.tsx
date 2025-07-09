@@ -1,3 +1,7 @@
+` tags.
+
+```python
+<replit_final_file>
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 
@@ -22,39 +26,40 @@ export interface SensorsState {
   airTemperature: SensorData;
   radiationShieldTemp: SensorData;
   soilTemperature: SensorData;
-  
+
   // Humidity sensors
   relativeHumidity: SensorData;
   dewPoint: SensorData;
   absoluteHumidity: SensorData;
-  
+
   // Wind sensors
   windSpeed: SensorData;
   windDirection: SensorData;
   gustSpeed: SensorData;
-  
+
   // Precipitation sensors
   rainGauge: SensorData;
   tippingBucket: SensorData;
   precipitationRate: SensorData;
-  
+
   // Pressure sensors
   atmosphericPressure: SensorData;
   seaLevelPressure: SensorData;
-  
+
   // Solar and UV sensors
   solarRadiation: SensorData;
   uvIndex: SensorData;
   solarPanelVoltage: SensorData;
-  
+
   // System sensors
   batteryLevel: SensorData;
   internalTemperature: SensorData;
-  
+
   // Actions
   updateSensorData: (sensorName: keyof SensorsState, value: number) => void;
   addSensorReading: (sensorName: keyof SensorsState, reading: SensorReading) => void;
   resetSensorData: () => void;
+  resetPrecipitationSensors: () => void;
 }
 
 const createEmptySensorData = (): SensorData => ({
@@ -89,29 +94,29 @@ export const useSensors = create<SensorsState>()(
     solarPanelVoltage: createEmptySensorData(),
     batteryLevel: createEmptySensorData(),
     internalTemperature: createEmptySensorData(),
-    
+
     updateSensorData: (sensorName, value) => {
       const state = get();
       const sensor = state[sensorName] as SensorData;
-      
+
       if (!sensor) return;
-      
+
       const readings = [...sensor.readings, {
         timestamp: Date.now(),
         value,
         status: 'normal' as const
       }];
-      
+
       // Keep only last 100 readings
       if (readings.length > 100) {
         readings.shift();
       }
-      
+
       const values = readings.map(r => r.value);
       const min = Math.min(...values);
       const max = Math.max(...values);
       const average = values.reduce((a, b) => a + b, 0) / values.length;
-      
+
       set({
         [sensorName]: {
           current: value,
@@ -124,20 +129,20 @@ export const useSensors = create<SensorsState>()(
         }
       });
     },
-    
+
     addSensorReading: (sensorName, reading) => {
       const state = get();
       const sensor = state[sensorName] as SensorData;
-      
+
       if (!sensor) return;
-      
+
       const readings = [...sensor.readings, reading];
-      
+
       // Keep only last 100 readings
       if (readings.length > 100) {
         readings.shift();
       }
-      
+
       set({
         [sensorName]: {
           ...sensor,
@@ -146,7 +151,7 @@ export const useSensors = create<SensorsState>()(
         }
       });
     },
-    
+
     resetSensorData: () => {
       set({
         airTemperature: createEmptySensorData(),
@@ -169,6 +174,53 @@ export const useSensors = create<SensorsState>()(
         batteryLevel: createEmptySensorData(),
         internalTemperature: createEmptySensorData(),
       });
-    }
+    },
+
+  resetPrecipitationSensors: () => set((state) => ({
+    ...state,
+    rainGauge: { ...state.rainGauge, current: 0 },
+    tippingBucket: { ...state.tippingBucket, current: 0 },
+    precipitationRate: { ...state.precipitationRate, current: 0 },
+  })),
   }))
+);
+import { useWeather } from './weatherStore';
+import { SensorCalculations } from '../utils/sensorCalculations';
+
+// Subscribe to weather changes
+useWeather.subscribe(
+  (state) => state,
+  (weather) => {
+    useSensors.setState((state) => {
+      // Calculate precipitation sensors based on weather
+      const currentPrecipitation = weather.precipitationType !== 'none' ? weather.precipitation : 0;
+      const tipRate = currentPrecipitation * 5; // Convert mm/h to tips (0.2mm per tip)
+      const newTips = state.tippingBucket.current + (tipRate * 0.016667); // Per minute increment
+      const newRainGauge = state.rainGauge.current + (currentPrecipitation * 0.016667); // Per minute increment
+
+      return {
+        ...state,
+        airTemperature: { ...state.airTemperature, current: weather.temperature },
+        radiationShieldTemp: { ...state.radiationShieldTemp, current: weather.temperature - 0.5 },
+        soilTemperature: { ...state.soilTemperature, current: weather.temperature - 2 },
+        relativeHumidity: { ...state.relativeHumidity, current: weather.humidity },
+        dewPoint: { ...state.dewPoint, current: SensorCalculations.calculateDewPoint(weather.temperature, weather.humidity) },
+        absoluteHumidity: { ...state.absoluteHumidity, current: SensorCalculations.calculateAbsoluteHumidity(weather.temperature, weather.humidity) },
+        windSpeed: { ...state.windSpeed, current: weather.windSpeed },
+        windDirection: { ...state.windDirection, current: weather.windDirection },
+        gustSpeed: { ...state.gustSpeed, current: weather.windSpeed * (1 + Math.random() * 0.5) },
+        atmosphericPressure: { ...state.atmosphericPressure, current: weather.pressure },
+        seaLevelPressure: { ...state.seaLevelPressure, current: weather.pressure + 1.2 },
+        solarRadiation: { ...state.solarRadiation, current: weather.solarRadiation },
+        uvIndex: { ...state.uvIndex, current: weather.uvIndex },
+        solarPanelVoltage: { ...state.solarPanelVoltage, current: (weather.solarRadiation / 1000) * 12 },
+        batteryLevel: { ...state.batteryLevel, current: Math.max(20, Math.min(100, state.batteryLevel.current + (weather.solarRadiation > 100 ? 0.1 : -0.05))) },
+        internalTemperature: { ...state.internalTemperature, current: weather.temperature + 5 + Math.random() * 2 },
+        // Precipitation sensors
+        rainGauge: { ...state.rainGauge, current: newRainGauge },
+        tippingBucket: { ...state.tippingBucket, current: newTips },
+        precipitationRate: { ...state.precipitationRate, current: currentPrecipitation },
+      };
+    });
+  }
 );

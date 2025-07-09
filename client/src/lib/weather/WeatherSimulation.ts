@@ -73,7 +73,7 @@ export class WeatherSimulation {
     // Precipitation (random chance)
     const precipitationChance = Math.random();
     const precipitation = precipitationChance < 0.95 ? 0 : Math.random() * 10;
-    const precipitationType = precipitation > 0 ? 
+    const precipitationType: 'none' | 'rain' | 'snow' = precipitation > 0 ? 
       (temperature < 2 ? 'snow' : 'rain') : 'none';
     
     // Visibility based on weather conditions

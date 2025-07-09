@@ -5,6 +5,7 @@ import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Button } from '../ui/button';
 import { useWeather } from '../../lib/stores/useWeather';
+import { useSensors } from '../../lib/stores/useSensors';
 import { 
   Thermometer, 
   Droplets, 
@@ -19,6 +20,7 @@ import {
 
 export function WeatherControls() {
   const weather = useWeather();
+  const sensors = useSensors();
 
   const resetToDefaults = () => {
     weather.setTemperature(22.5);
@@ -222,7 +224,13 @@ export function WeatherControls() {
             <Label className="text-sm">Precipitation Type</Label>
             <Select 
               value={weather.precipitationType} 
-              onValueChange={(value: 'none' | 'rain' | 'snow') => weather.setPrecipitationType(value)}
+              onValueChange={(value: 'none' | 'rain' | 'snow') => {
+                weather.setPrecipitationType(value);
+                if (value === 'none') {
+                  weather.setPrecipitation(0);
+                  sensors.resetPrecipitationSensors();
+                }
+              }}
             >
               <SelectTrigger>
                 <SelectValue />
