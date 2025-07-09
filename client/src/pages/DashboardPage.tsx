@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { SensorGrid } from '../components/dashboard/SensorGrid';
 import { DataCharts } from '../components/dashboard/DataCharts';
 import { TechnicalDisplay } from '../components/dashboard/TechnicalDisplay';
+import { NormalParameters } from '../components/dashboard/NormalParameters';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { BarChart3, Activity, Database, AlertTriangle } from 'lucide-react';
 import { useWeather } from '../lib/stores/useWeather';
@@ -15,16 +16,16 @@ export function DashboardPage() {
 
   useEffect(() => {
     const simulation = WeatherSimulation.getInstance();
-    
+
     const unsubscribe = simulation.subscribe((weatherUpdate) => {
       weather.updateWeather(weatherUpdate);
-      
+
       // Update sensor readings based on weather
       const sensorReadings = SensorCalculations.generateSensorReadings({
         ...weather,
         ...weatherUpdate
       });
-      
+
       // Update all sensors
       Object.entries(sensorReadings).forEach(([sensorName, value]) => {
         if (typeof value === 'number') {
@@ -55,7 +56,7 @@ export function DashboardPage() {
               </p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-4">
             <div className="text-center">
               <div className="text-2xl font-bold text-green-400">{activeSensors}</div>
@@ -86,7 +87,7 @@ export function DashboardPage() {
               <div className="text-xs text-muted-foreground">Success Rate</div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-card/50 border-border">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2">
@@ -99,7 +100,7 @@ export function DashboardPage() {
               <div className="text-xs text-muted-foreground">Operational</div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-card/50 border-border">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2">
@@ -112,7 +113,7 @@ export function DashboardPage() {
               <div className="text-xs text-muted-foreground">Active</div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-card/50 border-border">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2">
@@ -128,18 +129,15 @@ export function DashboardPage() {
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Sensor Grid - Takes up 2 columns */}
-          <div className="lg:col-span-2">
-            <SensorGrid />
-          </div>
-          
+        <div className="space-y-6">
+          <SensorGrid />
+          <NormalParameters />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Technical Display - Takes up 1 column */}
-          <div className="space-y-6">
             <TechnicalDisplay />
           </div>
         </div>
-        
+
         {/* Data Charts - Full width */}
         <DataCharts />
       </div>
