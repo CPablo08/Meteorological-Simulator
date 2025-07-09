@@ -187,27 +187,32 @@ import { useWeather } from './useWeather';
 import { SensorCalculations } from '../weather/SensorCalculations';
 
 // Subscribe to weather changes
+let lastPrecipitationType = 'none';
+
 useWeather.subscribe(
   (state) => state,
   (weather) => {
     useSensors.setState((state) => {
       // Calculate precipitation sensors based on weather
-      const isPrecipitating = weather.precipitationType !== 'none';
-      const currentPrecipitation = isPrecipitating ? weather.precipitation : 0;
+      const isPrecipitating = weather.precipitationType !== 'none' && weather.precipitation > 0;
       
-      // Reset precipitation sensors when no precipitation
+      // Reset precipitation sensors when precipitation type changes to 'none'
       let newRainGauge = state.rainGauge.current;
       let newTippingBucket = state.tippingBucket.current;
       
-      if (isPrecipitating) {
-        const incrementPerMinute = currentPrecipitation * 0.016667; // Convert mm/h to mm/min
-        newRainGauge += incrementPerMinute;
-        newTippingBucket += incrementPerMinute / 0.2; // 0.2mm per tip
-      } else {
-        // Reset when no precipitation
+      if (weather.precipitationType === 'none' && lastPrecipitationType !== 'none') {
+        // Reset when precipitation stops
         newRainGauge = 0;
         newTippingBucket = 0;
+      } else if (isPrecipitating) {
+        // Accumulate precipitation when it's actively raining/snowing
+        const incrementPerMinute = weather.precipitation * 0.016667; // Convert mm/h to mm/min
+        newRainGauge += incrementPerMinute;
+        newTippingBucket += incrementPerMinute / 0.2; // 0.2mm per tip
       }
+      
+      // Update last precipitation type
+      lastPrecipitationType = weather.precipitationType;
 
       return {
         ...state,
@@ -230,7 +235,7 @@ useWeather.subscribe(
         // Fixed precipitation sensors
         rainGauge: { ...state.rainGauge, current: newRainGauge },
         tippingBucket: { ...state.tippingBucket, current: newTippingBucket },
-        precipitationRate: { ...state.precipitationRate, current: currentPrecipitation },
+        precipitationRate: { ...state.precipitationRate, current: weather.precipitation },
       };
     });
   }
